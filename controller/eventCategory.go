@@ -11,15 +11,28 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func GeteventCategoryById(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("event_category_id"))
+	eventCategoryResponse, err := repository.GeteventCategoryById(database.DbConnection, id)
+
+	if err != nil {
+		result := helper.BuildResponse(false, "Get Data Event Category By Id Failed", err)
+		c.JSON(http.StatusOK, result)
+	} else {
+		result := helper.BuildResponse(true, "Get Data Event Category By Id Success", eventCategoryResponse)
+		c.JSON(http.StatusOK, result)
+	}
+}
+
 func GetAllEventCategory(c *gin.Context) {
 	if c.Request.Method == "GET" {
 
-		eventCategory := repository.GetAllEventCategory(database.DbConnection)
-		if eventCategory != nil {
-			result := helper.BuildResponse(false, "Get Data Event Category Failed", nil)
+		eventCategories, err := repository.GetAllEventCategory(database.DbConnection)
+		if err != nil {
+			result := helper.BuildResponse(false, "Get Data Event Category Failed", err)
 			c.JSON(http.StatusOK, result)
 		} else {
-			result := helper.BuildResponse(true, "Get Data Event Category Success", eventCategory)
+			result := helper.BuildResponse(true, "Get Data Event Category Success", eventCategories)
 			c.JSON(http.StatusOK, result)
 		}
 
@@ -47,6 +60,8 @@ func InsertEventCategory(c *gin.Context) {
 			result := helper.BuildResponse(true, "Create Data Event Category Success", eventCategory)
 			c.JSON(http.StatusOK, result)
 		}
+
+		return
 	}
 
 	res := helper.BuildErrorResponse("Data not found", "Method Failed", nil)
@@ -57,24 +72,27 @@ func UpdateEventCategory(c *gin.Context) {
 	if c.Request.Method == "PUT" {
 		var eventCategory entity.EventCategory
 
-		eventCategoryId, _ := strconv.Atoi(c.Param("event_category_id"))
+		id, _ := strconv.Atoi(c.Param("event_category_id"))
 
 		err := c.ShouldBindJSON(&eventCategory)
 		if err != nil {
-			panic(err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
 		}
 
-		eventCategory.EventCategoryId = int64(eventCategoryId)
+		eventCategory.EventCategoryId = id
 
 		err = repository.UpdateEventCategory(database.DbConnection, eventCategory)
 
 		if err != nil {
-			result := helper.BuildResponse(false, "Update Data Event Category Failed", nil)
+			result := helper.BuildResponse(false, "Update Data Event Category Failed", err.Error())
 			c.JSON(http.StatusOK, result)
 		} else {
 			result := helper.BuildResponse(true, "Update Data Event Category Success", eventCategory)
 			c.JSON(http.StatusOK, result)
 		}
+
+		return
 	}
 
 	res := helper.BuildErrorResponse("Data not found", "Method Failed", nil)
@@ -85,24 +103,21 @@ func DeleteEventCategory(c *gin.Context) {
 	if c.Request.Method == "DELETE" {
 		var eventCategory entity.EventCategory
 
-		eventCategoryId, _ := strconv.Atoi(c.Param("event_category_id"))
+		id, _ := strconv.Atoi(c.Param("event_category_id"))
 
-		err := c.ShouldBindJSON(&eventCategory)
-		if err != nil {
-			panic(err)
-		}
+		eventCategory.EventCategoryId = id
 
-		eventCategory.EventCategoryId = int64(eventCategoryId)
-
-		err = repository.DeleteEventCategory(database.DbConnection, eventCategory)
+		err := repository.DeleteEventCategory(database.DbConnection, eventCategory)
 
 		if err != nil {
-			result := helper.BuildResponse(false, "Delete Data Event Category Failed", nil)
+			result := helper.BuildResponse(false, "Delete Data Event Category Failed", err.Error())
 			c.JSON(http.StatusOK, result)
 		} else {
-			result := helper.BuildResponse(true, "Delete Data Event Category Success", eventCategory)
+			result := helper.BuildResponse(true, "Delete Data Event Category Success", nil)
 			c.JSON(http.StatusOK, result)
 		}
+
+		return
 	}
 
 	res := helper.BuildErrorResponse("Data not found", "Method Failed", nil)

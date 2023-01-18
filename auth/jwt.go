@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/golang-jwt/jwt/v4"
+	"github.com/dgrijalva/jwt-go"
 )
 
 var jwtKey = []byte("supersecretkey")
@@ -12,16 +12,16 @@ var jwtKey = []byte("supersecretkey")
 type JWTClaim struct {
 	Username string `json:"user_username"`
 	Email    string `json:"user_email"`
-	jwt.RegisteredClaims
+	jwt.StandardClaims
 }
 
 func GenerateJWT(email string, username string) (tokenString string, err error) {
+	expirationTime := time.Now().Add(1 * time.Minute)
 	claims := &JWTClaim{
 		Email:    email,
 		Username: username,
-		RegisteredClaims: jwt.RegisteredClaims{
-			Issuer:    "Test",
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24)),
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expirationTime.Unix(),
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -30,9 +30,10 @@ func GenerateJWT(email string, username string) (tokenString string, err error) 
 }
 
 func ValidateToken(signedToken string) (err error) {
+	claims := &JWTClaim{}
 	token, err := jwt.ParseWithClaims(
 		signedToken,
-		&JWTClaim{},
+		claims,
 		func(token *jwt.Token) (interface{}, error) {
 			return []byte(jwtKey), nil
 		},
@@ -48,7 +49,7 @@ func ValidateToken(signedToken string) (err error) {
 		return
 	}
 
-	if claims.ExpiresAt.Unix() < time.Now().Local().Unix() {
+	if claims.ExpiresAt < time.Now().Local().Unix() {
 		err = errors.New("token expired")
 		return
 	}

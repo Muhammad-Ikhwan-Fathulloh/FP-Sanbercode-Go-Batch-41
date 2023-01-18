@@ -11,15 +11,28 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func GeteventParticipantById(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("event_participant_id"))
+	eventParticipantResponse, err := repository.GeteventParticipantById(database.DbConnection, id)
+
+	if err != nil {
+		result := helper.BuildResponse(false, "Get Data Event Participant By Id Failed", err)
+		c.JSON(http.StatusOK, result)
+	} else {
+		result := helper.BuildResponse(true, "Get Data Event Participant By Id Success", eventParticipantResponse)
+		c.JSON(http.StatusOK, result)
+	}
+}
+
 func GetAllEventParticipant(c *gin.Context) {
 	if c.Request.Method == "GET" {
 
-		eventParticipant := repository.GetAllEventParticipant(database.DbConnection)
-		if eventParticipant != nil {
-			result := helper.BuildResponse(false, "Get Data Event Participant Failed", nil)
+		eventParticipants, err := repository.GetAllEventParticipant(database.DbConnection)
+		if err != nil {
+			result := helper.BuildResponse(false, "Get Data Event Participant Failed", err)
 			c.JSON(http.StatusOK, result)
 		} else {
-			result := helper.BuildResponse(true, "Get Data Event Participant Success", eventParticipant)
+			result := helper.BuildResponse(true, "Get Data Event Participant Success", eventParticipants)
 			c.JSON(http.StatusOK, result)
 		}
 
@@ -47,6 +60,8 @@ func InsertEventParticipant(c *gin.Context) {
 			result := helper.BuildResponse(true, "Create Data Event Participant Success", eventParticipant)
 			c.JSON(http.StatusOK, result)
 		}
+
+		return
 	}
 
 	res := helper.BuildErrorResponse("Data not found", "Method Failed", nil)
@@ -57,24 +72,27 @@ func UpdateEventParticipant(c *gin.Context) {
 	if c.Request.Method == "PUT" {
 		var eventParticipant entity.EventParticipant
 
-		eventParticipantId, _ := strconv.Atoi(c.Param("event_participant_id"))
+		id, _ := strconv.Atoi(c.Param("event_participant_id"))
 
 		err := c.ShouldBindJSON(&eventParticipant)
 		if err != nil {
-			panic(err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
 		}
 
-		eventParticipant.EventParticipantId = int64(eventParticipantId)
+		eventParticipant.EventParticipantId = id
 
 		err = repository.UpdateEventParticipant(database.DbConnection, eventParticipant)
 
 		if err != nil {
-			result := helper.BuildResponse(false, "Update Data Event Participant Failed", nil)
+			result := helper.BuildResponse(false, "Update Data Event Participant Failed", err.Error())
 			c.JSON(http.StatusOK, result)
 		} else {
 			result := helper.BuildResponse(true, "Update Data Event Participant Success", eventParticipant)
 			c.JSON(http.StatusOK, result)
 		}
+
+		return
 	}
 
 	res := helper.BuildErrorResponse("Data not found", "Method Failed", nil)
@@ -85,24 +103,21 @@ func DeleteEventParticipant(c *gin.Context) {
 	if c.Request.Method == "DELETE" {
 		var eventParticipant entity.EventParticipant
 
-		eventParticipantId, _ := strconv.Atoi(c.Param("event_participant_id"))
+		id, _ := strconv.Atoi(c.Param("event_participant_id"))
 
-		err := c.ShouldBindJSON(&eventParticipant)
-		if err != nil {
-			panic(err)
-		}
+		eventParticipant.EventParticipantId = id
 
-		eventParticipant.EventParticipantId = int64(eventParticipantId)
-
-		err = repository.DeleteEventParticipant(database.DbConnection, eventParticipant)
+		err := repository.DeleteEventParticipant(database.DbConnection, eventParticipant)
 
 		if err != nil {
-			result := helper.BuildResponse(false, "Delete Data Event Participant Failed", nil)
+			result := helper.BuildResponse(false, "Delete Data Event Participant Failed", err.Error())
 			c.JSON(http.StatusOK, result)
 		} else {
-			result := helper.BuildResponse(true, "Delete Data Event Participant Success", eventParticipant)
+			result := helper.BuildResponse(true, "Delete Data Event Participant Success", nil)
 			c.JSON(http.StatusOK, result)
 		}
+
+		return
 	}
 
 	res := helper.BuildErrorResponse("Data not found", "Method Failed", nil)

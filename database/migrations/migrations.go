@@ -9,13 +9,12 @@ import (
 )
 
 var (
-	DbConnection *sql.DB
-	Err          error
+	DB *sql.DB
 )
 
 func DbMigrate(dbParam *sql.DB) {
 	migrations := &migrate.PackrMigrationSource{
-		Box: packr.New("migrations", "./migrations"),
+		Box: packr.New("migrations", "./sqlmigrations"),
 	}
 
 	n, errors := migrate.Exec(dbParam, "postgres", migrations, migrate.Up)
@@ -23,7 +22,7 @@ func DbMigrate(dbParam *sql.DB) {
 		panic(errors)
 	}
 
-	DbConnection = dbParam
+	DB = dbParam
 
 	fmt.Println("Applied ", n, " migrations!")
 }

@@ -1,14 +1,17 @@
 package middleware
 
 import (
-	"Final-Project-Sanbercode-Go-Batch-41/auth"
+	"FP-Sanbercode-Go-Batch-41/auth"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
 func Auth() gin.HandlerFunc {
 	return func(context *gin.Context) {
-		tokenString := context.GetHeader("Authorization")
+		authorizationHeader := context.GetHeader("Authorization")
+		tokenString := strings.Replace(authorizationHeader, "Bearer ", "", -1)
+
 		if tokenString == "" {
 			context.JSON(401, gin.H{"error": "request does not contain an access token"})
 			context.Abort()

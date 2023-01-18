@@ -3,7 +3,7 @@ package entity
 import "time"
 
 type EventCategory struct {
-	EventCategoryId          int64     `json:"event_category_id"`
+	EventCategoryId          int       `json:"event_category_id"`
 	EventCategoryName        string    `json:"event_category_name"`
 	EventCategoryDescription string    `json:"event_category_description"`
 	CreatedAt                time.Time `json:"created_at,omitempty"`

@@ -2,43 +2,67 @@ package router
 
 import (
 	"FP-Sanbercode-Go-Batch-41/controller"
+	"FP-Sanbercode-Go-Batch-41/middleware"
 
 	"github.com/gin-gonic/gin"
 )
 
 func StartServer() *gin.Engine {
 	router := gin.Default()
+	api := router.Group("/api")
+	{
+		// Route Login Public
+		api.POST("/login", controller.GenerateToken)
 
-	router.POST("/token", controller.GenerateToken)
-	// Route Users
-	router.GET("/users", controller.GetAllUser)
-	router.POST("/users", controller.InsertUser)
-	router.PUT("/users/:id", controller.UpdateUser)
-	router.DELETE("/users/:id", controller.DeleteUser)
+		// Route Community Public
+		api.GET("/communities", controller.GetAllCommunity)
+		api.GET("/communities/:community_id", controller.GetCommunityById)
 
-	// Route Communities
-	router.GET("/communities", controller.GetAllCommunity)
-	router.POST("/communities", controller.InsertCommunity)
-	router.PUT("/communities/:id", controller.UpdateCommunity)
-	router.DELETE("/communities/:id", controller.DeleteCommunity)
+		// Route Event Category Public
+		api.GET("/event-categories", controller.GetAllEventCategory)
+		api.GET("/event-categories/:event_category_id", controller.GeteventCategoryById)
 
-	// Route Event Categories
-	router.GET("/event-categories", controller.GetAllEventCategory)
-	router.POST("/event-categories", controller.InsertEventCategory)
-	router.PUT("/event-categories/:id", controller.UpdateEventCategory)
-	router.DELETE("/event-categories/:id", controller.DeleteEventCategory)
+		// Route Event Public
+		api.GET("/events", controller.GetAllEvent)
+		api.GET("/events/:event_id", controller.GetEventById)
+		api.GET("/events/:community_id", controller.GetAllEventByCommunity)
+		api.GET("/events/:event_category_id", controller.GetAllEventByCategory)
 
-	// Route Events
-	router.GET("/events", controller.GetAllEvent)
-	router.POST("/events", controller.InsertEvent)
-	router.PUT("/events/:id", controller.UpdateEvent)
-	router.DELETE("/events/:id", controller.DeleteEvent)
+		// Route Event Participant Public
+		api.GET("/event-participants", controller.GetAllEventParticipant)
 
-	// Route Event Participants
-	router.GET("/event-participants", controller.GetAllEventParticipant)
-	router.POST("/event-participants", controller.InsertEventParticipant)
-	router.PUT("/event-participants/:id", controller.UpdateEventParticipant)
-	router.DELETE("/event-participants/:id", controller.DeleteEventParticipant)
+		// Route Management Private
+		secured := api.Group("/secured").Use(middleware.Auth())
+		{
+			// Route Users
+			secured.GET("/users", controller.GetAllUser)
+			secured.GET("/users/:user_id", controller.GetUserById)
+			secured.POST("/users", controller.InsertUser)
+			secured.PUT("/users/:user_id", controller.UpdateUser)
+			secured.DELETE("/users/:user_id", controller.DeleteUser)
+
+			// Route Communities
+			secured.POST("/communities", controller.InsertCommunity)
+			secured.PUT("/communities/:community_id", controller.UpdateCommunity)
+			secured.DELETE("/communities/:community_id", controller.DeleteCommunity)
+
+			// Route Event Categories
+			secured.POST("/event-categories", controller.InsertEventCategory)
+			secured.PUT("/event-categories/:event_category_id", controller.UpdateEventCategory)
+			secured.DELETE("/event-categories/:event_category_id", controller.DeleteEventCategory)
+
+			// Route Events
+			secured.POST("/events", controller.InsertEvent)
+			secured.PUT("/events/:event_id", controller.UpdateEvent)
+			secured.DELETE("/events/:event_id", controller.DeleteEvent)
+
+			// Route Event Participants
+			secured.GET("/event-participants/:event_participant_id", controller.GeteventParticipantById)
+			secured.POST("/event-participants", controller.InsertEventParticipant)
+			secured.PUT("/event-participants/:event_participant_id", controller.UpdateEventParticipant)
+			secured.DELETE("/event-participants/:event_participant_id", controller.DeleteEventParticipant)
+		}
+	}
 
 	return router
 }

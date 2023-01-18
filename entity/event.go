@@ -3,9 +3,9 @@ package entity
 import "time"
 
 type Event struct {
-	EventId          int64     `json:"event_id"`
-	CommunityId      int64     `json:"community_id"`
-	EventCategoryId  int64     `json:"event_category_id"`
+	EventId          int       `json:"event_id"`
+	CommunityId      int       `json:"community_id"`
+	EventCategoryId  int       `json:"event_category_id"`
 	EventName        string    `json:"event_name"`
 	EventLogo        string    `json:"event_logo"`
 	EventImage       string    `json:"event_image"`

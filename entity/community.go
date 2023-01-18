@@ -3,7 +3,7 @@ package entity
 import "time"
 
 type Community struct {
-	CommunityId          int64     `json:"community_id"`
+	CommunityId          int       `json:"community_id"`
 	CommunityName        string    `json:"community_name"`
 	CommunityLogo        string    `json:"community_logo"`
 	CommunityImage       string    `json:"community_image"`

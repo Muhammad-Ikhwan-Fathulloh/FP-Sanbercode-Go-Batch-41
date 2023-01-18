@@ -3,8 +3,8 @@ package entity
 import "time"
 
 type EventParticipant struct {
-	EventParticipantId        int64     `json:"event_participant_id"`
-	EventId                   int64     `json:"event_id"`
+	EventParticipantId        int       `json:"event_participant_id"`
+	EventId                   int       `json:"event_id"`
 	EventParticipantName      string    `json:"event_participant_name"`
 	EventParticipantEmail     string    `json:"event_participant_email"`
 	EventParticipantNoHp      string    `json:"event_participant_no_hp"`

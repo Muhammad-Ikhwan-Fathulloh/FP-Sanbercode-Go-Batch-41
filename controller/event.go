@@ -11,15 +11,54 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func GetEventById(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("event_id"))
+	eventResponse, err := repository.GetEventById(database.DbConnection, id)
+
+	if err != nil {
+		result := helper.BuildResponse(false, "Get Data Event By Id Failed", err)
+		c.JSON(http.StatusOK, result)
+	} else {
+		result := helper.BuildResponse(true, "Get Data Event By Id Success", eventResponse)
+		c.JSON(http.StatusOK, result)
+	}
+}
+
+func GetAllEventByCategory(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("event_category_id"))
+	eventResponse, err := repository.GetAllEventByCategory(database.DbConnection, id)
+
+	if err != nil {
+		result := helper.BuildResponse(false, "Get Data Event By Category Failed", err)
+		c.JSON(http.StatusOK, result)
+	} else {
+		result := helper.BuildResponse(true, "Get Data Event By Category Success", eventResponse)
+		c.JSON(http.StatusOK, result)
+	}
+}
+
+func GetAllEventByCommunity(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("event_community_id"))
+	eventResponse, err := repository.GetAllEventByCommunity(database.DbConnection, id)
+
+	if err != nil {
+		result := helper.BuildResponse(false, "Get Data Event By Community Failed", err)
+		c.JSON(http.StatusOK, result)
+	} else {
+		result := helper.BuildResponse(true, "Get Data Event By Community Success", eventResponse)
+		c.JSON(http.StatusOK, result)
+	}
+}
+
 func GetAllEvent(c *gin.Context) {
 	if c.Request.Method == "GET" {
 
-		event := repository.GetAllEvent(database.DbConnection)
-		if event != nil {
-			result := helper.BuildResponse(false, "Get Data Event Failed", nil)
+		events, err := repository.GetAllEvent(database.DbConnection)
+		if err != nil {
+			result := helper.BuildResponse(false, "Get Data Event Failed", err)
 			c.JSON(http.StatusOK, result)
 		} else {
-			result := helper.BuildResponse(true, "Get Data Event Success", event)
+			result := helper.BuildResponse(true, "Get Data Event Success", events)
 			c.JSON(http.StatusOK, result)
 		}
 
@@ -47,6 +86,8 @@ func InsertEvent(c *gin.Context) {
 			result := helper.BuildResponse(true, "Create Data Event Success", event)
 			c.JSON(http.StatusOK, result)
 		}
+
+		return
 	}
 
 	res := helper.BuildErrorResponse("Data not found", "Method Failed", nil)
@@ -57,24 +98,27 @@ func UpdateEvent(c *gin.Context) {
 	if c.Request.Method == "PUT" {
 		var event entity.Event
 
-		eventId, _ := strconv.Atoi(c.Param("event_id"))
+		id, _ := strconv.Atoi(c.Param("event_id"))
 
 		err := c.ShouldBindJSON(&event)
 		if err != nil {
-			panic(err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
 		}
 
-		event.EventId = int64(eventId)
+		event.EventId = id
 
 		err = repository.UpdateEvent(database.DbConnection, event)
 
 		if err != nil {
-			result := helper.BuildResponse(false, "Update Data Event Failed", nil)
+			result := helper.BuildResponse(false, "Update Data Event Failed", err.Error())
 			c.JSON(http.StatusOK, result)
 		} else {
 			result := helper.BuildResponse(true, "Update Data Event Success", event)
 			c.JSON(http.StatusOK, result)
 		}
+
+		return
 	}
 
 	res := helper.BuildErrorResponse("Data not found", "Method Failed", nil)
@@ -85,24 +129,21 @@ func DeleteEvent(c *gin.Context) {
 	if c.Request.Method == "DELETE" {
 		var event entity.Event
 
-		eventId, _ := strconv.Atoi(c.Param("event_id"))
+		id, _ := strconv.Atoi(c.Param("event_id"))
 
-		err := c.ShouldBindJSON(&event)
-		if err != nil {
-			panic(err)
-		}
+		event.EventId = id
 
-		event.EventId = int64(eventId)
-
-		err = repository.DeleteEvent(database.DbConnection, event)
+		err := repository.DeleteEvent(database.DbConnection, event)
 
 		if err != nil {
-			result := helper.BuildResponse(false, "Delete Data Event Failed", nil)
+			result := helper.BuildResponse(false, "Delete Data Event Failed", err.Error())
 			c.JSON(http.StatusOK, result)
 		} else {
-			result := helper.BuildResponse(true, "Delete Data Event Success", event)
+			result := helper.BuildResponse(true, "Delete Data Event Success", nil)
 			c.JSON(http.StatusOK, result)
 		}
+
+		return
 	}
 
 	res := helper.BuildErrorResponse("Data not found", "Method Failed", nil)

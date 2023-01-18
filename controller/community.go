@@ -11,12 +11,25 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func GetCommunityById(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("community_id"))
+	communityResponse, err := repository.GetCommunityById(database.DbConnection, id)
+
+	if err != nil {
+		result := helper.BuildResponse(false, "Get Data Community By Id Failed", err)
+		c.JSON(http.StatusOK, result)
+	} else {
+		result := helper.BuildResponse(true, "Get Data Community By Id Success", communityResponse)
+		c.JSON(http.StatusOK, result)
+	}
+}
+
 func GetAllCommunity(c *gin.Context) {
 	if c.Request.Method == "GET" {
 
-		communities := repository.GetAllCommunity(database.DbConnection)
-		if communities != nil {
-			result := helper.BuildResponse(false, "Get Data Community Failed", nil)
+		communities, err := repository.GetAllCommunity(database.DbConnection)
+		if err != nil {
+			result := helper.BuildResponse(false, "Get Data Community Failed", err)
 			c.JSON(http.StatusOK, result)
 		} else {
 			result := helper.BuildResponse(true, "Get Data Community Success", communities)
@@ -47,6 +60,8 @@ func InsertCommunity(c *gin.Context) {
 			result := helper.BuildResponse(true, "Create Data Community Success", community)
 			c.JSON(http.StatusOK, result)
 		}
+
+		return
 	}
 
 	res := helper.BuildErrorResponse("Data not found", "Method Failed", nil)
@@ -57,24 +72,27 @@ func UpdateCommunity(c *gin.Context) {
 	if c.Request.Method == "PUT" {
 		var community entity.Community
 
-		communityId, _ := strconv.Atoi(c.Param("community_id"))
+		id, _ := strconv.Atoi(c.Param("community_id"))
 
 		err := c.ShouldBindJSON(&community)
 		if err != nil {
-			panic(err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
 		}
 
-		community.CommunityId = int64(communityId)
+		community.CommunityId = id
 
 		err = repository.UpdateCommunity(database.DbConnection, community)
 
 		if err != nil {
-			result := helper.BuildResponse(false, "Update Data Community Failed", nil)
+			result := helper.BuildResponse(false, "Update Data Community Failed", err.Error())
 			c.JSON(http.StatusOK, result)
 		} else {
 			result := helper.BuildResponse(true, "Update Data Community Success", community)
 			c.JSON(http.StatusOK, result)
 		}
+
+		return
 	}
 
 	res := helper.BuildErrorResponse("Data not found", "Method Failed", nil)
@@ -85,24 +103,21 @@ func DeleteCommunity(c *gin.Context) {
 	if c.Request.Method == "DELETE" {
 		var community entity.Community
 
-		communityId, _ := strconv.Atoi(c.Param("community_id"))
+		id, _ := strconv.Atoi(c.Param("community_id"))
 
-		err := c.ShouldBindJSON(&community)
-		if err != nil {
-			panic(err)
-		}
+		community.CommunityId = id
 
-		community.CommunityId = int64(communityId)
-
-		err = repository.DeleteCommunity(database.DbConnection, community)
+		err := repository.DeleteCommunity(database.DbConnection, community)
 
 		if err != nil {
-			result := helper.BuildResponse(false, "Delete Data Community Failed", nil)
+			result := helper.BuildResponse(false, "Delete Data Community Failed", err.Error())
 			c.JSON(http.StatusOK, result)
 		} else {
-			result := helper.BuildResponse(true, "Delete Data Community Success", community)
+			result := helper.BuildResponse(true, "Delete Data Community Success", nil)
 			c.JSON(http.StatusOK, result)
 		}
+
+		return
 	}
 
 	res := helper.BuildErrorResponse("Data not found", "Method Failed", nil)

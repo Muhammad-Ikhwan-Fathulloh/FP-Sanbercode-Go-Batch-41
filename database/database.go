@@ -39,7 +39,10 @@ func init() {
 		fmt.Println("Database Connected")
 	}
 
-	migrations.DbMigrate(DbConnection)
+	statusMigrate := 0
+	if statusMigrate == 1 {
+		migrations.DbMigrate(DbConnection)
 
-	defer DbConnection.Close()
+		defer DbConnection.Close()
+	}
 }

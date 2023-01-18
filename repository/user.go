@@ -3,6 +3,7 @@ package repository
 import (
 	"FP-Sanbercode-Go-Batch-41/entity"
 	"database/sql"
+	"errors"
 	_ "fmt"
 	_ "log"
 	"time"
@@ -10,72 +11,90 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func HashPassword(password string) error {
-	var user entity.User
-
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 8)
-	if err != nil {
-		return err
-	}
-	user.UserPassword = string(bytes)
-	return nil
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
 }
 
-func CheckPassword(providedPassword string) error {
-	var user entity.User
+func GetUserById(db *sql.DB, userId int) (userResponse entity.User, err error) {
+	sqlStatement := "SELECT * FROM users WHERE user_id = $1"
 
-	err := bcrypt.CompareHashAndPassword([]byte(user.UserPassword), []byte(providedPassword))
-	if err != nil {
-		return err
-	}
-	return nil
+	err = db.QueryRow(sqlStatement, userId).Scan(&userResponse.UserId, &userResponse.UserFullname, &userResponse.UserUsername, &userResponse.UserPassword, &userResponse.UserEmail, &userResponse.CreatedAt, &userResponse.UpdatedAt)
+
+	return
 }
 
-func GetAllUser(db *sql.DB) []entity.User {
-	var results = []entity.User{}
-	sql := `SELECT * FROM users`
+func GetUserByEmail(db *sql.DB, userEmail string) (userResponse entity.User, err error) {
+	sql := "SELECT user_id, user_fullname, user_username, user_password, user_email FROM users WHERE user_email = $1"
 
-	rows, err := db.Query(sql)
+	err = db.QueryRow(sql, userEmail).Scan(&userResponse.UserId, &userResponse.UserFullname, &userResponse.UserUsername, &userResponse.UserPassword, &userResponse.UserEmail)
+
+	return
+}
+
+func GetAllUser(db *sql.DB) (results []entity.User, err error) {
+	sqlStatement := `SELECT * FROM users`
+
+	rows, err := db.Query(sqlStatement)
 	if err != nil {
 		panic(err)
 	}
-
-	defer rows.Close()
 
 	for rows.Next() {
 		var user = entity.User{}
 
 		err = rows.Scan(&user.UserId, &user.UserFullname, &user.UserUsername, &user.UserPassword, &user.UserEmail, &user.CreatedAt, &user.UpdatedAt)
-		if err != nil {
-			panic(err)
-		}
 
 		results = append(results, user)
 	}
 
-	return results
+	return
 }
 
 func InsertUser(db *sql.DB, user entity.User) (err error) {
-	sql := `INSERT INTO users (user_id, user_fullname, user_username, user_password, user_email, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7)`
+	sqlStatement := `INSERT INTO users (user_fullname, user_username, user_password, user_email, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6)`
+	bytes, err := bcrypt.GenerateFromPassword([]byte(user.UserPassword), 8)
+	if err != nil {
+		return err
+	}
 
-	errs := db.QueryRow(sql, user.UserId, user.UserFullname, user.UserUsername, user.UserPassword, user.UserEmail, time.Now(), time.Now())
+	user.UserPassword = string(bytes)
+
+	errs := db.QueryRow(sqlStatement, &user.UserFullname, &user.UserUsername, &user.UserPassword, &user.UserEmail, time.Now(), time.Now())
 
 	return errs.Err()
 }
 
 func UpdateUser(db *sql.DB, user entity.User) (err error) {
-	sql := `UPDATE users SET user_fullname = $1, user_username = $2, user_password = $3, user_email = $4, updated_at = $5 WHERE user_id = $6`
+	sqlStatement := `UPDATE users SET user_fullname = $2, user_username = $3, user_email = $4, updated_at = $5 WHERE user_id = $1`
 
-	errs := db.QueryRow(sql, user.UserFullname, user.UserUsername, user.UserPassword, user.UserEmail, time.Now(), user.UserId)
+	res, err := db.Exec(sqlStatement, user.UserId, user.UserFullname, user.UserUsername, user.UserEmail, time.Now())
 
-	return errs.Err()
+	if err != nil {
+		return
+	}
+
+	count, err := res.RowsAffected()
+	if err == nil && count == 0 {
+		err = errors.New("rows is empty")
+	}
+
+	return
 }
 
 func DeleteUser(db *sql.DB, user entity.User) (err error) {
-	sql := `DELETE FROM users WHERE user_id = $1`
+	sqlStatement := `DELETE FROM users WHERE user_id = $1`
 
-	errs := db.QueryRow(sql, user.UserId)
+	res, err := db.Exec(sqlStatement, user.UserId)
 
-	return errs.Err()
+	if err != nil {
+		return
+	}
+
+	count, err := res.RowsAffected()
+	if err == nil && count == 0 {
+		err = errors.New("rows is empty")
+	}
+
+	return
 }
