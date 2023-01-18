@@ -1,14 +1,13 @@
 package database
 
 import (
+	"FP-Sanbercode-Go-Batch-41/database/migrations"
 	"database/sql"
 	"fmt"
 	"os"
 
-	"github.com/gobuffalo/packr/v2"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
-	migrate "github.com/rubenv/sql-migrate"
 )
 
 var (
@@ -40,20 +39,7 @@ func init() {
 		fmt.Println("Database Connected")
 	}
 
-	// defer DbConnection.Close()
-}
+	migrations.DbMigrate(DbConnection)
 
-func DbMigrate(dbParam *sql.DB) {
-	migrations := &migrate.PackrMigrationSource{
-		Box: packr.New("migrations", "./migrations"),
-	}
-
-	n, errors := migrate.Exec(dbParam, "postgres", migrations, migrate.Up)
-	if errors != nil {
-		panic(errors)
-	}
-
-	DbConnection = dbParam
-
-	fmt.Println("Applied ", n, " migrations!")
+	defer DbConnection.Close()
 }

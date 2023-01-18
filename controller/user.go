@@ -39,6 +39,14 @@ func InsertUser(c *gin.Context) {
 			panic(err)
 		}
 
+		// password, err := bcrypt.GenerateFromPassword([]byte(user.UserPassword), bcrypt.DefaultCost)
+		// if err != nil {
+		// 	c.JSON(http.StatusInternalServerError, gin.H{
+		// 		"error": "failed to hash password.",
+		// 	})
+		// 	panic(err)
+		// }
+
 		err = repository.InsertUser(database.DbConnection, user)
 		if err != nil {
 			result := helper.BuildResponse(false, "Create Data User Failed", nil)
