@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"Final-Project-Sanbercode-Go-Batch-41/auth"
-	"Final-Project-Sanbercode-Go-Batch-41/entity"
-	"Final-Project-Sanbercode-Go-Batch-41/repository"
+	"FP-Sanbercode-Go-Batch-41/auth"
+	"FP-Sanbercode-Go-Batch-41/entity"
+	"FP-Sanbercode-Go-Batch-41/repository"
 	"database/sql"
 	"net/http"
 

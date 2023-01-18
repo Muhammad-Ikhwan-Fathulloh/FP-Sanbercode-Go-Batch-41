@@ -1,4 +1,4 @@
-module Final-Project-Sanbercode-Go-Batch-41
+module FP-Sanbercode-Go-Batch-41
 
 go 1.19
 

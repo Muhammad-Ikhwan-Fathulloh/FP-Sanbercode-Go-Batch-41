@@ -1,7 +1,7 @@
 package router
 
 import (
-	"Final-Project-Sanbercode-Go-Batch-41/controller"
+	"FP-Sanbercode-Go-Batch-41/controller"
 
 	"github.com/gin-gonic/gin"
 )

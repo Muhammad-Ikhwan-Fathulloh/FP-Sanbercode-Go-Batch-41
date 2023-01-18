@@ -1,10 +1,10 @@
 package controller
 
 import (
-	"Final-Project-Sanbercode-Go-Batch-41/database"
-	"Final-Project-Sanbercode-Go-Batch-41/entity"
-	"Final-Project-Sanbercode-Go-Batch-41/helper"
-	"Final-Project-Sanbercode-Go-Batch-41/repository"
+	"FP-Sanbercode-Go-Batch-41/database"
+	"FP-Sanbercode-Go-Batch-41/entity"
+	"FP-Sanbercode-Go-Batch-41/helper"
+	"FP-Sanbercode-Go-Batch-41/repository"
 	"net/http"
 	"strconv"
 

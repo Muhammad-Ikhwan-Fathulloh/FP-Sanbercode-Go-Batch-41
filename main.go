@@ -1,8 +1,8 @@
 package main
 
 import (
-	"Final-Project-Sanbercode-Go-Batch-41/database"
-	"Final-Project-Sanbercode-Go-Batch-41/router"
+	"FP-Sanbercode-Go-Batch-41/database"
+	"FP-Sanbercode-Go-Batch-41/router"
 	"database/sql"
 	"os"
 )

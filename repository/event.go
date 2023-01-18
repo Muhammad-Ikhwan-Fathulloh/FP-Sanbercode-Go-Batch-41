@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"Final-Project-Sanbercode-Go-Batch-41/entity"
+	"FP-Sanbercode-Go-Batch-41/entity"
 	"database/sql"
 	_ "fmt"
 	_ "log"
