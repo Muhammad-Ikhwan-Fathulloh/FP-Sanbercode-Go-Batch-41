@@ -15,7 +15,7 @@ func GetAllUser(c *gin.Context) {
 	if c.Request.Method == "GET" {
 
 		users := repository.GetAllUser(database.DbConnection)
-		if users != nil {
+		if users == nil {
 			result := helper.BuildResponse(false, "Get Data User Failed", nil)
 			c.JSON(http.StatusOK, result)
 		} else {

@@ -9,6 +9,7 @@ import (
 func StartServer() *gin.Engine {
 	router := gin.Default()
 
+	router.POST("/token", controller.GenerateToken)
 	// Route Users
 	router.GET("/users", controller.GetAllUser)
 	router.POST("/users", controller.InsertUser)

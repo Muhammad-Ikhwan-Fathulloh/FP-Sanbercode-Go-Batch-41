@@ -6,7 +6,30 @@ import (
 	_ "fmt"
 	_ "log"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
+
+func HashPassword(password string) error {
+	var user entity.User
+
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 8)
+	if err != nil {
+		return err
+	}
+	user.UserPassword = string(bytes)
+	return nil
+}
+
+func CheckPassword(providedPassword string) error {
+	var user entity.User
+
+	err := bcrypt.CompareHashAndPassword([]byte(user.UserPassword), []byte(providedPassword))
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 func GetAllUser(db *sql.DB) []entity.User {
 	var results = []entity.User{}
@@ -22,7 +45,7 @@ func GetAllUser(db *sql.DB) []entity.User {
 	for rows.Next() {
 		var user = entity.User{}
 
-		err = rows.Scan(user.UserId, user.UserFullname, user.UserUsername, user.UserPassword, user.UserEmail)
+		err = rows.Scan(&user.UserId, &user.UserFullname, &user.UserUsername, &user.UserPassword, &user.UserEmail, &user.CreatedAt, &user.UpdatedAt)
 		if err != nil {
 			panic(err)
 		}

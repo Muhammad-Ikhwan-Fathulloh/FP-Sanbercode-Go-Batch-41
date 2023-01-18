@@ -22,7 +22,7 @@ func GetAllEventCategory(db *sql.DB) []entity.EventCategory {
 	for rows.Next() {
 		var eventCategory = entity.EventCategory{}
 
-		err = rows.Scan(&eventCategory.EventCategoryId, &eventCategory.EventCategoryName, &eventCategory.EventCategoryDescription)
+		err = rows.Scan(&eventCategory.EventCategoryId, &eventCategory.EventCategoryName, &eventCategory.EventCategoryDescription, &eventCategory.CreatedAt, &eventCategory.UpdatedAt)
 		if err != nil {
 			panic(err)
 		}

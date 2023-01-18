@@ -22,7 +22,7 @@ func GetAllCommunity(db *sql.DB) []entity.Community {
 	for rows.Next() {
 		var community = entity.Community{}
 
-		err = rows.Scan(community.CommunityId, community.CommunityName, community.CommunityLogo, community.CommunityImage, community.CommunityDescription, community.CommunityAddress, community.CommunityLatitude, community.CommunityLongitude, community.CommunityInfo)
+		err = rows.Scan(&community.CommunityId, &community.CommunityName, &community.CommunityLogo, &community.CommunityImage, &community.CommunityDescription, &community.CommunityAddress, &community.CommunityLatitude, &community.CommunityLongitude, &community.CommunityInfo, &community.CreatedAt, &community.UpdatedAt)
 		if err != nil {
 			panic(err)
 		}

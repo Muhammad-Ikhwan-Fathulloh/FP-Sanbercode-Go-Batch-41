@@ -22,7 +22,7 @@ func GetAllEventParticipant(db *sql.DB) []entity.EventParticipant {
 	for rows.Next() {
 		var eventParticipant = entity.EventParticipant{}
 
-		err = rows.Scan(eventParticipant.EventParticipantId, eventParticipant.EventId, eventParticipant.EventParticipantName, eventParticipant.EventParticipantEmail, eventParticipant.EventParticipantNoHp, eventParticipant.EventParticipantCommunity, eventParticipant.EventParticipantStatus)
+		err = rows.Scan(&eventParticipant.EventParticipantId, &eventParticipant.EventId, &eventParticipant.EventParticipantName, &eventParticipant.EventParticipantEmail, &eventParticipant.EventParticipantNoHp, &eventParticipant.EventParticipantCommunity, &eventParticipant.EventParticipantStatus, &eventParticipant.CreatedAt, &eventParticipant.UpdatedAt)
 		if err != nil {
 			panic(err)
 		}
