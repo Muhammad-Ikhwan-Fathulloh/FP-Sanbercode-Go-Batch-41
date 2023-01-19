@@ -20,7 +20,7 @@ func GetAllEvent(db *sql.DB) (results []entity.Event, err error) {
 	for rows.Next() {
 		var event = entity.Event{}
 
-		err = rows.Scan(event.EventId, &event.EventName, &event.EventLogo, &event.EventImage, &event.EventDescription, &event.EventAddress, &event.EventLatitude, &event.EventLongitude, &event.EventStartDate, &event.EventFinishDate, &event.CreatedAt, &event.CreatedBy, &event.UpdatedAt, &event.UpdatedBy)
+		err = rows.Scan(&event.EventId, &event.CommunityId, &event.EventCategoryId, &event.EventName, &event.EventLogo, &event.EventImage, &event.EventDescription, &event.EventAddress, &event.EventLatitude, &event.EventLongitude, &event.EventStartDate, &event.EventFinishDate, &event.CreatedAt, &event.CreatedBy, &event.UpdatedAt, &event.UpdatedBy)
 
 		results = append(results, event)
 	}
@@ -31,7 +31,7 @@ func GetAllEvent(db *sql.DB) (results []entity.Event, err error) {
 func GetEventById(db *sql.DB, eventId int) (eventResponse entity.Event, err error) {
 	sqlStatement := `SELECT * FROM events WHERE event_id=$1`
 
-	err = db.QueryRow(sqlStatement, eventId).Scan(&eventResponse.EventId, &eventResponse.EventName, &eventResponse.EventLogo, &eventResponse.EventImage, &eventResponse.EventDescription, &eventResponse.EventAddress, &eventResponse.EventLatitude, &eventResponse.EventLongitude, &eventResponse.EventStartDate, &eventResponse.EventFinishDate, &eventResponse.CreatedAt, &eventResponse.CreatedBy, &eventResponse.UpdatedAt, &eventResponse.UpdatedBy)
+	err = db.QueryRow(sqlStatement, eventId).Scan(&eventResponse.EventId, &eventResponse.CommunityId, &eventResponse.EventCategoryId, &eventResponse.EventName, &eventResponse.EventLogo, &eventResponse.EventImage, &eventResponse.EventDescription, &eventResponse.EventAddress, &eventResponse.EventLatitude, &eventResponse.EventLongitude, &eventResponse.EventStartDate, &eventResponse.EventFinishDate, &eventResponse.CreatedAt, &eventResponse.CreatedBy, &eventResponse.UpdatedAt, &eventResponse.UpdatedBy)
 
 	return
 }
@@ -39,7 +39,7 @@ func GetEventById(db *sql.DB, eventId int) (eventResponse entity.Event, err erro
 func GetAllEventByCommunity(db *sql.DB, CommunityId int) (eventResponse entity.Event, err error) {
 	sqlStatement := `SELECT * FROM events WHERE community_id=$1`
 
-	err = db.QueryRow(sqlStatement, CommunityId).Scan(&eventResponse.EventId, &eventResponse.EventName, &eventResponse.EventLogo, &eventResponse.EventImage, &eventResponse.EventDescription, &eventResponse.EventAddress, &eventResponse.EventLatitude, &eventResponse.EventLongitude, &eventResponse.EventStartDate, &eventResponse.EventFinishDate, &eventResponse.CreatedAt, &eventResponse.CreatedBy, &eventResponse.UpdatedAt, &eventResponse.UpdatedBy)
+	err = db.QueryRow(sqlStatement, CommunityId).Scan(&eventResponse.EventId, &eventResponse.CommunityId, &eventResponse.EventCategoryId, &eventResponse.EventName, &eventResponse.EventLogo, &eventResponse.EventImage, &eventResponse.EventDescription, &eventResponse.EventAddress, &eventResponse.EventLatitude, &eventResponse.EventLongitude, &eventResponse.EventStartDate, &eventResponse.EventFinishDate, &eventResponse.CreatedAt, &eventResponse.CreatedBy, &eventResponse.UpdatedAt, &eventResponse.UpdatedBy)
 
 	return
 }
@@ -47,7 +47,7 @@ func GetAllEventByCommunity(db *sql.DB, CommunityId int) (eventResponse entity.E
 func GetAllEventByCategory(db *sql.DB, eventCategoryId int) (eventResponse entity.Event, err error) {
 	sqlStatement := `SELECT * FROM events WHERE event_category_id=$1`
 
-	err = db.QueryRow(sqlStatement, eventCategoryId).Scan(&eventResponse.EventId, &eventResponse.EventName, &eventResponse.EventLogo, &eventResponse.EventImage, &eventResponse.EventDescription, &eventResponse.EventAddress, &eventResponse.EventLatitude, &eventResponse.EventLongitude, &eventResponse.EventStartDate, &eventResponse.EventFinishDate, &eventResponse.CreatedAt, &eventResponse.CreatedBy, &eventResponse.UpdatedAt, &eventResponse.UpdatedBy)
+	err = db.QueryRow(sqlStatement, eventCategoryId).Scan(&eventResponse.EventId, &eventResponse.CommunityId, &eventResponse.EventCategoryId, &eventResponse.EventName, &eventResponse.EventLogo, &eventResponse.EventImage, &eventResponse.EventDescription, &eventResponse.EventAddress, &eventResponse.EventLatitude, &eventResponse.EventLongitude, &eventResponse.EventStartDate, &eventResponse.EventFinishDate, &eventResponse.CreatedAt, &eventResponse.CreatedBy, &eventResponse.UpdatedAt, &eventResponse.UpdatedBy)
 
 	return
 }
@@ -61,7 +61,7 @@ func InsertEvent(db *sql.DB, event entity.Event) (err error) {
 }
 
 func UpdateEvent(db *sql.DB, event entity.Event) (err error) {
-	sqlStatement := `UPDATE events SET community_id = $2, event_category_id = $3, event_name = $4, event_logo = $5, event_image = $6, event_description = $7, event_address = $8, event_latitude = $9, event_longitude = $10, event_start_date = $11, event_finish_date = $12, , updated_at = $13, updated_by = $14 WHERE event_id = $1`
+	sqlStatement := `UPDATE events SET community_id = $2, event_category_id = $3, event_name = $4, event_logo = $5, event_image = $6, event_description = $7, event_address = $8, event_latitude = $9, event_longitude = $10, event_start_date = $11, event_finish_date = $12, updated_at = $13, updated_by = $14 WHERE event_id = $1`
 
 	res, err := db.Exec(sqlStatement, &event.EventId, &event.CommunityId, &event.EventCategoryId, &event.EventName, &event.EventLogo, &event.EventImage, &event.EventDescription, &event.EventAddress, &event.EventLatitude, &event.EventLongitude, &event.EventStartDate, &event.EventFinishDate, time.Now(), &event.UpdatedBy)
 

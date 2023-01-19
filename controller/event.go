@@ -16,7 +16,7 @@ func GetEventById(c *gin.Context) {
 	eventResponse, err := repository.GetEventById(database.DbConnection, id)
 
 	if err != nil {
-		result := helper.BuildResponse(false, "Get Data Event By Id Failed", err)
+		result := helper.BuildResponse(false, "Get Data Event By Id Failed", err.Error())
 		c.JSON(http.StatusOK, result)
 	} else {
 		result := helper.BuildResponse(true, "Get Data Event By Id Success", eventResponse)
@@ -29,7 +29,7 @@ func GetAllEventByCategory(c *gin.Context) {
 	eventResponse, err := repository.GetAllEventByCategory(database.DbConnection, id)
 
 	if err != nil {
-		result := helper.BuildResponse(false, "Get Data Event By Category Failed", err)
+		result := helper.BuildResponse(false, "Get Data Event By Category Failed", err.Error())
 		c.JSON(http.StatusOK, result)
 	} else {
 		result := helper.BuildResponse(true, "Get Data Event By Category Success", eventResponse)
@@ -42,7 +42,7 @@ func GetAllEventByCommunity(c *gin.Context) {
 	eventResponse, err := repository.GetAllEventByCommunity(database.DbConnection, id)
 
 	if err != nil {
-		result := helper.BuildResponse(false, "Get Data Event By Community Failed", err)
+		result := helper.BuildResponse(false, "Get Data Event By Community Failed", err.Error())
 		c.JSON(http.StatusOK, result)
 	} else {
 		result := helper.BuildResponse(true, "Get Data Event By Community Success", eventResponse)
@@ -55,7 +55,7 @@ func GetAllEvent(c *gin.Context) {
 
 		events, err := repository.GetAllEvent(database.DbConnection)
 		if err != nil {
-			result := helper.BuildResponse(false, "Get Data Event Failed", err)
+			result := helper.BuildResponse(false, "Get Data Event Failed", err.Error())
 			c.JSON(http.StatusOK, result)
 		} else {
 			result := helper.BuildResponse(true, "Get Data Event Success", events)
