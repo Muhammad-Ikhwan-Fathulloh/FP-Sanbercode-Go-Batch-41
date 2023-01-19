@@ -80,8 +80,8 @@ Method | Path | Keterangan | Auth
 Endpoint ini bertanggung jawab mengelola data partisipan acara yang diadakan komunitas dan memberikan akses generate QR Code untuk akses masuk acara.
 Method | Path | Keterangan | Auth
 ------------- | ------------- | ------------- | -------------
-***GET*** | *`/api/event-participants`* | Mengakses data partisipan acara 
-***GET*** | *`/api/event-participants-by-event/:event_id`* | Mengakses data partisipan acara berdasarkan id acara | token
+***GET*** | *`/api/secured/event-participants`* | Mengakses data partisipan acara | token
+***GET*** | *`/api/event-participants-by-event/:event_id`* | Mengakses data partisipan acara berdasarkan id acara 
 ***GET*** | *`/api/secured/event-participants/:event_participant_id`* | Mengakses data partisipan acara berdasakan id partisipan acara | token
 ***POST*** | *`/api/event-participants`* | Membuat data partisipan acara baru
 ***PUT*** | *`/api/secured/event-participants/:event_participant_id`* | Mengubah data partisipan acara berdasakan id partisipan acara | token
