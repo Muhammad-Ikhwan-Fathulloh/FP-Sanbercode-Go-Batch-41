@@ -29,33 +29,17 @@ func GetAllEvent(db *sql.DB) (results []entity.Event, err error) {
 }
 
 func GetEventById(db *sql.DB, eventId int) (eventResponse entity.Event, err error) {
-	sqlStatement := `SELECT * FROM events WHERE event_id={$1}`
+	sqlStatement := `SELECT * FROM events WHERE event_id=$1`
 
-	rows, err := db.Query(sqlStatement, eventId)
-	if err != nil {
-		panic(err)
-	}
-
-	err = rows.Scan(&eventResponse.EventId, &eventResponse.EventName, &eventResponse.EventLogo, &eventResponse.EventImage, &eventResponse.EventDescription, &eventResponse.EventAddress, &eventResponse.EventLatitude, &eventResponse.EventLongitude, &eventResponse.EventStartDate, &eventResponse.EventFinishDate, &eventResponse.CreatedAt, &eventResponse.CreatedBy, &eventResponse.UpdatedAt, &eventResponse.UpdatedBy)
-	if err != nil {
-		panic(err)
-	}
+	err = db.QueryRow(sqlStatement, eventId).Scan(&eventResponse.EventId, &eventResponse.EventName, &eventResponse.EventLogo, &eventResponse.EventImage, &eventResponse.EventDescription, &eventResponse.EventAddress, &eventResponse.EventLatitude, &eventResponse.EventLongitude, &eventResponse.EventStartDate, &eventResponse.EventFinishDate, &eventResponse.CreatedAt, &eventResponse.CreatedBy, &eventResponse.UpdatedAt, &eventResponse.UpdatedBy)
 
 	return
 }
 
 func GetAllEventByCommunity(db *sql.DB, CommunityId int) (eventResponse entity.Event, err error) {
-	sqlStatement := `SELECT * FROM events WHERE community_id={$1}`
+	sqlStatement := `SELECT * FROM events WHERE community_id=$1`
 
-	rows, err := db.Query(sqlStatement, CommunityId)
-	if err != nil {
-		panic(err)
-	}
-
-	err = rows.Scan(&eventResponse.EventId, &eventResponse.EventName, &eventResponse.EventLogo, &eventResponse.EventImage, &eventResponse.EventDescription, &eventResponse.EventAddress, &eventResponse.EventLatitude, &eventResponse.EventLongitude, &eventResponse.EventStartDate, &eventResponse.EventFinishDate, &eventResponse.CreatedAt, &eventResponse.CreatedBy, &eventResponse.UpdatedAt, &eventResponse.UpdatedBy)
-	if err != nil {
-		panic(err)
-	}
+	err = db.QueryRow(sqlStatement, CommunityId).Scan(&eventResponse.EventId, &eventResponse.EventName, &eventResponse.EventLogo, &eventResponse.EventImage, &eventResponse.EventDescription, &eventResponse.EventAddress, &eventResponse.EventLatitude, &eventResponse.EventLongitude, &eventResponse.EventStartDate, &eventResponse.EventFinishDate, &eventResponse.CreatedAt, &eventResponse.CreatedBy, &eventResponse.UpdatedAt, &eventResponse.UpdatedBy)
 
 	return
 }
