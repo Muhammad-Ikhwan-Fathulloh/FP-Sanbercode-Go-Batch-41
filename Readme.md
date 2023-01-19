@@ -10,6 +10,7 @@
 <li>Github : https://github.com/Muhammad-Ikhwan-Fathulloh/FP-Sanbercode-Go-Batch-41</li>
 <li>Deploy Railway : https://collabs.up.railway.app/</li>
 <li>Documentation Postman : https://documenter.getpostman.com/view/19977900/2s8ZDX2Mdu</li>
+<li>PPT : https://docs.google.com/presentation/d/1MpGq3PKj6LE9tWqqjf8vFbIAWCWz11K6rglFTk5otg8/edit?usp=sharing</li>
 </ul>
 
 ### ERD
