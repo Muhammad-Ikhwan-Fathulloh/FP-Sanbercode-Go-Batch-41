@@ -71,6 +71,7 @@ func StartServer() *gin.Engine {
 			secured.DELETE("/events/:event_id", controller.DeleteEvent)
 
 			// Route Event Participants
+			secured.GET("/event-participants-by-event/:event_id", controller.GetAlleventParticipantByEvent)
 			secured.GET("/event-participants", controller.GetAllEventParticipant)
 			secured.POST("/event-participants", controller.InsertEventParticipant)
 			secured.PUT("/event-participants/:event_participant_id", controller.UpdateEventParticipant)

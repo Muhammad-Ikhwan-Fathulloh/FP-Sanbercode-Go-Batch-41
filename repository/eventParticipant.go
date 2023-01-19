@@ -9,10 +9,18 @@ import (
 	"time"
 )
 
-func GeteventParticipantById(db *sql.DB, eventParticipantById int) (eventParticipantResponse entity.EventParticipant, err error) {
+func GeteventParticipantById(db *sql.DB, eventParticipantId int) (eventParticipantResponse entity.EventParticipant, err error) {
 	sqlStatement := "SELECT * FROM event_participants WHERE event_participant_id = $1"
 
-	err = db.QueryRow(sqlStatement, eventParticipantById).Scan(&eventParticipantResponse.EventParticipantId, &eventParticipantResponse.EventId, &eventParticipantResponse.EventParticipantName, &eventParticipantResponse.EventParticipantEmail, &eventParticipantResponse.EventParticipantNoHp, &eventParticipantResponse.EventParticipantCommunity, &eventParticipantResponse.EventParticipantStatus, &eventParticipantResponse.CreatedAt, &eventParticipantResponse.UpdatedAt)
+	err = db.QueryRow(sqlStatement, eventParticipantId).Scan(&eventParticipantResponse.EventParticipantId, &eventParticipantResponse.EventId, &eventParticipantResponse.EventParticipantName, &eventParticipantResponse.EventParticipantEmail, &eventParticipantResponse.EventParticipantNoHp, &eventParticipantResponse.EventParticipantCommunity, &eventParticipantResponse.EventParticipantStatus, &eventParticipantResponse.CreatedAt, &eventParticipantResponse.UpdatedAt)
+
+	return
+}
+
+func GetAlleventParticipantByEvent(db *sql.DB, eventId int) (eventParticipantResponse entity.EventParticipant, err error) {
+	sqlStatement := "SELECT * FROM event_participants WHERE event_id = $1"
+
+	err = db.QueryRow(sqlStatement, eventId).Scan(&eventParticipantResponse.EventParticipantId, &eventParticipantResponse.EventId, &eventParticipantResponse.EventParticipantName, &eventParticipantResponse.EventParticipantEmail, &eventParticipantResponse.EventParticipantNoHp, &eventParticipantResponse.EventParticipantCommunity, &eventParticipantResponse.EventParticipantStatus, &eventParticipantResponse.CreatedAt, &eventParticipantResponse.UpdatedAt)
 
 	return
 }

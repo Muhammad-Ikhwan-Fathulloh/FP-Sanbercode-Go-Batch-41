@@ -81,6 +81,7 @@ Endpoint ini bertanggung jawab mengelola data partisipan acara yang diadakan kom
 Method | Path | Keterangan | Auth
 ------------- | ------------- | ------------- | -------------
 ***GET*** | *`/api/event-participants`* | Mengakses data partisipan acara 
+***GET*** | *`/api/event-participants-by-event/:event_id`* | Mengakses data partisipan acara berdasarkan id acara | token
 ***GET*** | *`/api/secured/event-participants/:event_participant_id`* | Mengakses data partisipan acara berdasakan id partisipan acara | token
 ***POST*** | *`/api/secured/event-participants`* | Membuat data partisipan acara baru | token
 ***PUT*** | *`/api/secured/event-participants/:event_participant_id`* | Mengubah data partisipan acara berdasakan id partisipan acara | token

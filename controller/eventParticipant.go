@@ -27,6 +27,22 @@ func GeteventParticipantById(c *gin.Context) {
 	}
 }
 
+func GetAlleventParticipantByEvent(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("event_id"))
+	eventParticipantResponse, err := repository.GetAlleventParticipantByEvent(database.DbConnection, id)
+
+	if err != nil {
+		result := helper.BuildResponse(false, "Get Data Event Participant By Event Id Failed", err)
+		c.JSON(http.StatusOK, result)
+	} else {
+		result := helper.BuildResponse(true, "Get Data Event Participant By Event Id Success", gin.H{
+			"data":   eventParticipantResponse,
+			"ticket": "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + eventParticipantResponse.EventParticipantName + eventParticipantResponse.EventParticipantEmail + eventParticipantResponse.EventParticipantCommunity + eventParticipantResponse.EventParticipantStatus,
+		})
+		c.JSON(http.StatusOK, result)
+	}
+}
+
 func GetAllEventParticipant(c *gin.Context) {
 	if c.Request.Method == "GET" {
 
