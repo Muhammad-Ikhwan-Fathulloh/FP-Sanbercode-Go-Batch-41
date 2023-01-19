@@ -26,12 +26,17 @@ Sistem Informasi Acara Komunitas dan Tiket ini memiliki 5 tabel :
 
 ### API
 Sistem Informasi Acara Komunitas dan Tiket ini memiliki 5 endpoint :
+## Endpoint Main
+Endpoint utama.
+Method | Path | Keterangan | Auth
+------------- | ------------- | ------------- | -------------
+***GET*** | *`/`* | Menampilkan identitas pembuat api
 
 ## Endpoint Auth/User
 Endpoint ini bertanggung jawab membuat generate token untuk token ke endpoint pengelolaan.
 Method | Path | Keterangan | Auth
 ------------- | ------------- | ------------- | -------------
-***POST*** | *`/api/login`* | Men-generate token untuk mengakses endpoint yang berfungsi sebagai pengelolaan. Token akan didapatkan setelah pengguna mengirim json berupa "*email dan password*" yang terdaftar
+***POST*** | *`/api/login`* | Men-generate token untuk mengakses endpoint yang berfungsi sebagai pengelolaan. Token akan didapatkan setelah pengguna mengirim request json berupa email dan password yang sudah terdaftar
 ***GET*** | *`/api/secured/users`* | Mengakses data pengguna | token
 ***GET*** | *`/api/secured/users/:user_id`* | Mengakses data pengguna berdasakan id pengguna | token
 ***POST*** | *`/api/secured/users`* | Membuat data pengguna baru | token
