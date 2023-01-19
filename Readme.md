@@ -14,21 +14,31 @@
 </ul>
 
 ### ERD
-
+Sistem Informasi Acara Komunitas dan Tiket ini memiliki 5 tabel :
+<ul>
+<li>Tabel users</li>
+<li>Tabel communities</li>
+<li>Tabel event_categories</li>
+<li>Tabel events</li>
+<li>Tabel event_participants</li>
+</ul>
 <img src="documentation/ERD-FP Golang.drawio.png">
 
-### Endpoint Auth/User
+### API
+Sistem Informasi Acara Komunitas dan Tiket ini memiliki 5 endpoint :
+
+## Endpoint Auth/User
 Endpoint ini bertanggung jawab membuat generate token untuk token ke endpoint pengelolaan.
 Method | Path | Keterangan | Auth
 ------------- | ------------- | ------------- | -------------
 ***POST*** | *`/api/login`* | Men-generate token untuk mengakses endpoint yang berfungsi sebagai pengelolaan. Token akan didapatkan setelah pengguna mengirim json berupa "*email dan password*" yang terdaftar
-***GET*** | *`/api/users`* | Mengakses data pengguna | token
+***GET*** | *`/api/secured/users`* | Mengakses data pengguna | token
 ***GET*** | *`/api/secured/users/:user_id`* | Mengakses data pengguna berdasakan id pengguna | token
 ***POST*** | *`/api/secured/users`* | Membuat data pengguna baru | token
 ***PUT*** | *`/api/secured/users/:user_id`* | Mengubah data pengguna berdasakan id pengguna | token
 ***DELETE*** | *`/api/secured/users/:user_id`* | Menghapus data pengguna berdasakan id pengguna | token
 
-### Endpoint Community
+## Endpoint Community
 Endpoint ini bertanggung jawab mengelola data komunitas yang berkolaborasi.
 Method | Path | Keterangan | Auth
 ------------- | ------------- | ------------- | -------------
@@ -38,7 +48,7 @@ Method | Path | Keterangan | Auth
 ***PUT*** | *`/api/secured/communities/:community_id`* | Mengubah data komunitas berdasakan id komunitas | token
 ***DELETE*** | *`/api/secured/communities/:community_id`* | Menghapus data komunitas berdasakan id komunitas | token
 
-### Endpoint Kategori Acara
+## Endpoint Kategori Acara
 Endpoint ini bertanggung jawab mengelola data kategori acara.
 Method | Path | Keterangan | Auth
 ------------- | ------------- | ------------- | -------------
@@ -48,7 +58,7 @@ Method | Path | Keterangan | Auth
 ***PUT*** | *`/api/secured/event-categories/:event_category_id`* | Mengubah data kategori acara berdasakan id kategori acara | token
 ***DELETE*** | *`/api/secured/event-categories/:event_category_id`* | Menghapus data kategori acara berdasakan id kategori acara | token
 
-### Endpoint Acara
+## Endpoint Acara
 Endpoint ini bertanggung jawab mengelola data acara yang diadakan komunitas.
 Method | Path | Keterangan | Auth
 ------------- | ------------- | ------------- | -------------
@@ -61,7 +71,7 @@ Method | Path | Keterangan | Auth
 ***DELETE*** | *`/api/secured/events/:event_id`* | Menghapus data acara berdasakan id acara | token
 
 
-### Endpoint Partisipan Acara
+## Endpoint Partisipan Acara
 Endpoint ini bertanggung jawab mengelola data partisipan acara yang diadakan komunitas dan memberikan akses generate QR Code untuk akses masuk acara.
 Method | Path | Keterangan | Auth
 ------------- | ------------- | ------------- | -------------
