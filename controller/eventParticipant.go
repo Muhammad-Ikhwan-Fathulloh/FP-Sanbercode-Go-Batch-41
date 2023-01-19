@@ -35,10 +35,7 @@ func GetAlleventParticipantByEvent(c *gin.Context) {
 		result := helper.BuildResponse(false, "Get Data Event Participant By Event Id Failed", err)
 		c.JSON(http.StatusOK, result)
 	} else {
-		result := helper.BuildResponse(true, "Get Data Event Participant By Event Id Success", gin.H{
-			"data":   eventParticipantResponse,
-			"ticket": "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + eventParticipantResponse.EventParticipantName + eventParticipantResponse.EventParticipantEmail + eventParticipantResponse.EventParticipantCommunity + eventParticipantResponse.EventParticipantStatus,
-		})
+		result := helper.BuildResponse(true, "Get Data Event Participant By Event Id Success", eventParticipantResponse)
 		c.JSON(http.StatusOK, result)
 	}
 }
