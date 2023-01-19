@@ -10,17 +10,9 @@ import (
 )
 
 func GetCommunityById(db *sql.DB, communityId int) (communityResponse entity.Community, err error) {
-	sqlStatement := `SELECT * FROM communities WHERE community_id={$1}`
+	sqlStatement := `SELECT * FROM communities WHERE community_id=$1`
 
-	rows, err := db.Query(sqlStatement, communityId)
-	if err != nil {
-		panic(err)
-	}
-
-	err = rows.Scan(&communityResponse.CommunityId, &communityResponse.CommunityName, &communityResponse.CommunityLogo, &communityResponse.CommunityImage, &communityResponse.CommunityDescription, &communityResponse.CommunityAddress, &communityResponse.CommunityLatitude, &communityResponse.CommunityLongitude, &communityResponse.CommunityInfo, &communityResponse.CreatedAt, &communityResponse.CreatedBy, &communityResponse.UpdatedAt, &communityResponse.UpdatedBy)
-	if err != nil {
-		panic(err)
-	}
+	err = db.QueryRow(sqlStatement, communityId).Scan(&communityResponse.CommunityId, &communityResponse.CommunityName, &communityResponse.CommunityLogo, &communityResponse.CommunityImage, &communityResponse.CommunityDescription, &communityResponse.CommunityAddress, &communityResponse.CommunityLatitude, &communityResponse.CommunityLongitude, &communityResponse.CommunityInfo, &communityResponse.CreatedAt, &communityResponse.CreatedBy, &communityResponse.UpdatedAt, &communityResponse.UpdatedBy)
 
 	return
 }

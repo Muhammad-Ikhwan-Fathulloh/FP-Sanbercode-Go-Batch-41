@@ -16,7 +16,7 @@ func GetUserById(c *gin.Context) {
 	userResponse, err := repository.GetUserById(database.DbConnection, id)
 
 	if err != nil {
-		result := helper.BuildResponse(false, "Get Data User By Id Failed", err)
+		result := helper.BuildResponse(false, "Get Data User By Id Failed", err.Error())
 		c.JSON(http.StatusOK, result)
 	} else {
 		result := helper.BuildResponse(true, "Get Data User By Id Success", userResponse)

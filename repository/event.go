@@ -61,17 +61,9 @@ func GetAllEventByCommunity(db *sql.DB, CommunityId int) (eventResponse entity.E
 }
 
 func GetAllEventByCategory(db *sql.DB, eventCategoryId int) (eventResponse entity.Event, err error) {
-	sqlStatement := `SELECT * FROM events WHERE event_category_id={$1}`
+	sqlStatement := `SELECT * FROM events WHERE event_category_id=$1`
 
-	rows, err := db.Query(sqlStatement, eventCategoryId)
-	if err != nil {
-		panic(err)
-	}
-
-	err = rows.Scan(&eventResponse.EventId, &eventResponse.EventName, &eventResponse.EventLogo, &eventResponse.EventImage, &eventResponse.EventDescription, &eventResponse.EventAddress, &eventResponse.EventLatitude, &eventResponse.EventLongitude, &eventResponse.EventStartDate, &eventResponse.EventFinishDate, &eventResponse.CreatedAt, &eventResponse.CreatedBy, &eventResponse.UpdatedAt, &eventResponse.UpdatedBy)
-	if err != nil {
-		panic(err)
-	}
+	err = db.QueryRow(sqlStatement, eventCategoryId).Scan(&eventResponse.EventId, &eventResponse.EventName, &eventResponse.EventLogo, &eventResponse.EventImage, &eventResponse.EventDescription, &eventResponse.EventAddress, &eventResponse.EventLatitude, &eventResponse.EventLongitude, &eventResponse.EventStartDate, &eventResponse.EventFinishDate, &eventResponse.CreatedAt, &eventResponse.CreatedBy, &eventResponse.UpdatedAt, &eventResponse.UpdatedBy)
 
 	return
 }

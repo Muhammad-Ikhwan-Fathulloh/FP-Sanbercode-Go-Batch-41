@@ -16,7 +16,7 @@ func GetCommunityById(c *gin.Context) {
 	communityResponse, err := repository.GetCommunityById(database.DbConnection, id)
 
 	if err != nil {
-		result := helper.BuildResponse(false, "Get Data Community By Id Failed", err)
+		result := helper.BuildResponse(false, "Get Data Community By Id Failed", err.Error())
 		c.JSON(http.StatusOK, result)
 	} else {
 		result := helper.BuildResponse(true, "Get Data Community By Id Success", communityResponse)
