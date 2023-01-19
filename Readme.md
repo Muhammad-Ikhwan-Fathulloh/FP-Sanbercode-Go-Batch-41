@@ -19,8 +19,8 @@
 
 ### Endpoint Auth/User
 Endpoint ini bertanggung jawab membuat generate token untuk token ke endpoint pengelolaan.
-Method | Path | Keterangan
-------------- | ------------- | -------------
+Method | Path | Keterangan | Auth
+------------- | ------------- | ------------- | -------------
 ***POST*** | *`/login`* | Men-generate token untuk mengakses endpoint yang berfungsi sebagai pengelolaan. Token akan didapatkan setelah pengguna mengirim json berupa "*email dan password*" yang terdaftar
 ***GET*** | *`/users`* | Mengakses data pengguna | token
 ***GET*** | *`/users/:user_id`* | Mengakses data pengguna berdasakan id pengguna | token
@@ -30,8 +30,8 @@ Method | Path | Keterangan
 
 ### Endpoint Community
 Endpoint ini bertanggung jawab mengelola data komunitas yang berkolaborasi.
-Method | Path | Keterangan
-------------- | ------------- | -------------
+Method | Path | Keterangan | Auth
+------------- | ------------- | ------------- | -------------
 ***GET*** | *`/communities`* | Mengakses data komunitas 
 ***GET*** | *`/communities/:community_id`* | Mengakses data komunitas berdasakan id komunitas 
 ***POST*** | *`/communities`* | Membuat data komunitas baru | token
@@ -40,8 +40,8 @@ Method | Path | Keterangan
 
 ### Endpoint Kategori Acara
 Endpoint ini bertanggung jawab mengelola data kategori acara.
-Method | Path | Keterangan
-------------- | ------------- | -------------
+Method | Path | Keterangan | Auth
+------------- | ------------- | ------------- | -------------
 ***GET*** | *`/event-categories`* | Mengakses data kategori acara 
 ***GET*** | *`/event-categories/:event_category_id`* | Mengakses data kategori acara berdasakan id kategori acara 
 ***POST*** | *`/event-categories`* | Membuat data kategori acara baru | token
@@ -50,8 +50,8 @@ Method | Path | Keterangan
 
 ### Endpoint Acara
 Endpoint ini bertanggung jawab mengelola data acara yang diadakan komunitas.
-Method | Path | Keterangan
-------------- | ------------- | -------------
+Method | Path | Keterangan | Auth
+------------- | ------------- | ------------- | -------------
 ***GET*** | *`/events`* | Mengakses data acara 
 ***GET*** | *`/events/:event_id`* | Mengakses data acara berdasakan id acara 
 ***GET*** | *`/events-by-category/:event_category_id`* | Mengakses data acara berdasakan id kategori acara 
@@ -63,8 +63,8 @@ Method | Path | Keterangan
 
 ### Endpoint Partisipan Acara
 Endpoint ini bertanggung jawab mengelola data partisipan acara yang diadakan komunitas dan memberikan akses generate QR Code untuk akses masuk acara.
-Method | Path | Keterangan
-------------- | ------------- | -------------
+Method | Path | Keterangan | Auth
+------------- | ------------- | ------------- | -------------
 ***GET*** | *`/event-participants`* | Mengakses data partisipan acara 
 ***GET*** | *`/event-participants/:event_participant_id`* | Mengakses data partisipan acara berdasakan id partisipan acara | token
 ***POST*** | *`/event-participants`* | Membuat data partisipan acara baru | token
