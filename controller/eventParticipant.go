@@ -57,7 +57,7 @@ func InsertEventParticipant(c *gin.Context) {
 
 		err = repository.InsertEventParticipant(database.DbConnection, eventParticipant)
 		if err != nil {
-			result := helper.BuildResponse(false, "Create Data Event Participant Failed", nil)
+			result := helper.BuildResponse(false, "Create Data Event Participant Failed", err.Error())
 			c.JSON(http.StatusOK, result)
 		} else {
 			result := helper.BuildResponse(true, "Create Data Event Participant Success", eventParticipant)

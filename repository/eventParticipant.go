@@ -37,7 +37,7 @@ func GetAllEventParticipant(db *sql.DB) (results []entity.EventParticipant, err 
 }
 
 func InsertEventParticipant(db *sql.DB, eventParticipant entity.EventParticipant) (err error) {
-	sqlStatement := `INSERT INTO event_participants (event_id, event_participant_name, event_participant_email, event_participant_no_hp, event_participant_community, event_participant_status, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7)`
+	sqlStatement := `INSERT INTO event_participants (event_id, event_participant_name, event_participant_email, event_participant_no_hp, event_participant_community, event_participant_status, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
 
 	errs := db.QueryRow(sqlStatement, &eventParticipant.EventId, &eventParticipant.EventParticipantName, &eventParticipant.EventParticipantEmail, &eventParticipant.EventParticipantNoHp, &eventParticipant.EventParticipantCommunity, &eventParticipant.EventParticipantStatus, time.Now(), time.Now())
 
