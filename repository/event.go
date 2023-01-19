@@ -44,10 +44,10 @@ func GetEventById(db *sql.DB, eventId int) (eventResponse entity.Event, err erro
 	return
 }
 
-func GetAllEventByCommunity(db *sql.DB, eventCommunityId int) (eventResponse entity.Event, err error) {
-	sqlStatement := `SELECT * FROM events WHERE event_community_id={$1}`
+func GetAllEventByCommunity(db *sql.DB, CommunityId int) (eventResponse entity.Event, err error) {
+	sqlStatement := `SELECT * FROM events WHERE community_id={$1}`
 
-	rows, err := db.Query(sqlStatement, eventCommunityId)
+	rows, err := db.Query(sqlStatement, CommunityId)
 	if err != nil {
 		panic(err)
 	}

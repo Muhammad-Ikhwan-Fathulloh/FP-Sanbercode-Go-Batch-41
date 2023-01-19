@@ -38,7 +38,7 @@ func GetAllEventByCategory(c *gin.Context) {
 }
 
 func GetAllEventByCommunity(c *gin.Context) {
-	id, _ := strconv.Atoi(c.Param("event_community_id"))
+	id, _ := strconv.Atoi(c.Param("community_id"))
 	eventResponse, err := repository.GetAllEventByCommunity(database.DbConnection, id)
 
 	if err != nil {

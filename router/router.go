@@ -11,32 +11,43 @@ func StartServer() *gin.Engine {
 	router := gin.Default()
 	api := router.Group("/api")
 	{
-		// Route Login Public
 		api.POST("/login", controller.GenerateToken)
 
-		// Route Community Public
-		api.GET("/communities", controller.GetAllCommunity)
+		// Route Communities
 		api.GET("/communities/:community_id", controller.GetCommunityById)
+		api.GET("/communities", controller.GetAllCommunity)
+		// api.POST("/communities", controller.InsertCommunity)
+		// api.PUT("/communities/:community_id", controller.UpdateCommunity)
+		// api.DELETE("/communities/:community_id", controller.DeleteCommunity)
 
-		// Route Event Category Public
-		api.GET("/event-categories", controller.GetAllEventCategory)
+		// Route Event Categories
 		api.GET("/event-categories/:event_category_id", controller.GeteventCategoryById)
+		api.GET("/event-categories", controller.GetAllEventCategory)
+		// api.POST("/event-categories", controller.InsertEventCategory)
+		// api.PUT("/event-categories/:event_category_id", controller.UpdateEventCategory)
+		// api.DELETE("/event-categories/:event_category_id", controller.DeleteEventCategory)
 
-		// Route Event Public
-		api.GET("/events", controller.GetAllEvent)
+		// Route Events
 		api.GET("/events/:event_id", controller.GetEventById)
-		api.GET("/events/:community_id", controller.GetAllEventByCommunity)
-		api.GET("/events/:event_category_id", controller.GetAllEventByCategory)
+		api.GET("/events-by-category/:event_category_id", controller.GetAllEventByCategory)
+		api.GET("/events-by-community/:community_id", controller.GetAllEventByCommunity)
+		api.GET("/events", controller.GetAllEvent)
+		// api.POST("/events", controller.InsertEvent)
+		// api.PUT("/events/:event_id", controller.UpdateEvent)
+		// api.DELETE("/events/:event_id", controller.DeleteEvent)
 
-		// Route Event Participant Public
+		// Route Event Participants
+		api.GET("/event-participants/:event_participant_id", controller.GeteventParticipantById)
 		api.GET("/event-participants", controller.GetAllEventParticipant)
+		// api.POST("/event-participants", controller.InsertEventParticipant)
+		// api.PUT("/event-participants/:event_participant_id", controller.UpdateEventParticipant)
+		// api.DELETE("/event-participants/:event_participant_id", controller.DeleteEventParticipant)
 
-		// Route Management Private
 		secured := api.Group("/secured").Use(middleware.Auth())
 		{
 			// Route Users
-			secured.GET("/users", controller.GetAllUser)
 			secured.GET("/users/:user_id", controller.GetUserById)
+			secured.GET("/users", controller.GetAllUser)
 			secured.POST("/users", controller.InsertUser)
 			secured.PUT("/users/:user_id", controller.UpdateUser)
 			secured.DELETE("/users/:user_id", controller.DeleteUser)
@@ -57,7 +68,7 @@ func StartServer() *gin.Engine {
 			secured.DELETE("/events/:event_id", controller.DeleteEvent)
 
 			// Route Event Participants
-			secured.GET("/event-participants/:event_participant_id", controller.GeteventParticipantById)
+			secured.GET("/event-participants", controller.GetAllEventParticipant)
 			secured.POST("/event-participants", controller.InsertEventParticipant)
 			secured.PUT("/event-participants/:event_participant_id", controller.UpdateEventParticipant)
 			secured.DELETE("/event-participants/:event_participant_id", controller.DeleteEventParticipant)
