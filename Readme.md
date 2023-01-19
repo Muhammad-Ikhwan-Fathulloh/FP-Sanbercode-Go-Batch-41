@@ -12,6 +12,10 @@
 <li>Documentation Postman : https://documenter.getpostman.com/view/19977900/2s8ZDX2Mdu</li>
 </ul>
 
+### ERD
+
+<img src="documentation/ERD-FP Golang.drawio.png">
+
 ### Endpoint Auth/User
 Endpoint ini bertanggung jawab membuat generate token untuk token ke endpoint pengelolaan.
 Method | Path | Keterangan
