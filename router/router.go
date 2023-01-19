@@ -42,7 +42,7 @@ func StartServer() *gin.Engine {
 		// Route Event Participants
 		api.GET("/event-participants/:event_participant_id", controller.GeteventParticipantById)
 		api.GET("/event-participants", controller.GetAllEventParticipant)
-		// api.POST("/event-participants", controller.InsertEventParticipant)
+		api.POST("/event-participants", controller.InsertEventParticipant)
 		// api.PUT("/event-participants/:event_participant_id", controller.UpdateEventParticipant)
 		// api.DELETE("/event-participants/:event_participant_id", controller.DeleteEventParticipant)
 
@@ -73,7 +73,7 @@ func StartServer() *gin.Engine {
 			// Route Event Participants
 			secured.GET("/event-participants-by-event/:event_id", controller.GetAlleventParticipantByEvent)
 			secured.GET("/event-participants", controller.GetAllEventParticipant)
-			secured.POST("/event-participants", controller.InsertEventParticipant)
+			// secured.POST("/event-participants", controller.InsertEventParticipant)
 			secured.PUT("/event-participants/:event_participant_id", controller.UpdateEventParticipant)
 			secured.DELETE("/event-participants/:event_participant_id", controller.DeleteEventParticipant)
 		}
